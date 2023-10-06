@@ -1,13 +1,20 @@
-// Определяем маршруты по которым будут отправляться запросы
-
 const Router = require("express")
 const contoller = require("./authController")
-// Создадим объект этого роутера
-const router = new Router() // теперь этот роутер может прослушивать запросы
+const router = new Router() // Создадим объект этого роутера. Теперь этот роутер может прослушивать запросы
+const { check } = require("express-validator") // Валидация. "check" является функцией middleware 
+
+
+// Маршруты по которым будут отправляться запросы
 
 
 //Запрос на регистрацию  "POST"
-router.post('/registration',  contoller.registration)
+router.post('/registration', [
+
+     check('username', "Имя пользователя не может быть пустым ").notEmpty(), 
+     check('password', "Пороль должен быть больше 4 и меньше 10 символов").isLength({min: 4, max: 10})   
+
+],  contoller.registration)
+
 
 //Запрос на вход  "POST"
 router.post('/login', contoller.login)

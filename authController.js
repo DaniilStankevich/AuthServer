@@ -1,18 +1,22 @@
 // Здесь идет описание всех функций по взаимодействию с пользователем
-
 const User = require('./models/User')
 const Role = require('./models/Role')
 const bcrypt = require('bcryptjs');
-
+const { validationResult } = require("express-validator")
 
 // Я создал "class" чтобы скомпоновать функции ниже в одну сущность
 class authContoller {
 
-
     async registration(req, res) {
 
         try {
-            //Вытаскиваем логин и пороль из тела запроса
+
+            const errors = validationResult(req) //Возвращение ошибок, вследствие валидации
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ message: "Ошибка при регистрации", errors })
+            }
+
+            //Вытаскиваем логин и пароль из тела запроса
             const { username, password } = req.body
 
             //Проверка на существование пользователя в БД по критерию "username"
@@ -24,8 +28,8 @@ class authContoller {
             }
 
 
-            //Перед отправкой пороля в БД, в целях безопасноти нужно его "захешировать"
-            const hashPassword = bcrypt.hashSync(password, 7);  //Пороль и степень шифрования. Я поставил 7 в целях экономии времени
+            //Перед отправкой пароля в БД, в целях безопасноти нужно его "захешировать"
+            const hashPassword = bcrypt.hashSync(password, 7);  //Пароль и степень шифрования. Я поставил 7 в целях экономии времени
 
             //Получение роли с БД, чтобы присвоить её новому пользователю
             const userRole = await Role.findOne({ value: "USER"})
@@ -73,6 +77,5 @@ class authContoller {
 
 }
 
-// req, res - вопрос и ответ
 
 module.exports = new authContoller()

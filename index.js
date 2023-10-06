@@ -10,11 +10,11 @@ const PORT = process.env.PORT | 5000
 const app = express()
 
 
-// Затставляем сервер парcить json
+// Заставляем сервер парcить json
 app.use(express.json())
 
 // Говорим нашему приложению прослушивать роутер
-app.use('/auth', authRouter) // Первый параметр - url по которому наш роует будет "Слушаться"
+app.use('/auth', authRouter) // Первый параметр - url по которому наш роует будет "слушаться"
 
 
 const client = new MongoClient(uri, {
@@ -43,7 +43,7 @@ const start = async () => {
         await mongoose.connect(uri, options)
         app.listen(PORT, () => console.log(`server stared on port ${PORT}`))
        // const users = client.db().collection('roles')
-       //  const use = await users.find({}).toArray()
+       // const use = await users.find({}).toArray()
        // console.log(use)
     } catch (e) {
         console.log(e)
