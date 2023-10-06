@@ -50,11 +50,11 @@ const start = async () => {
 
         app.listen(PORT, () => console.log(`server stared on port ${PORT}`))
 
-        const users = client.db().collection('useres')
-        const use = await users.find({}).toArray()
+        //const users = client.db().collection('useres')
+       // const use = await users.find({}).toArray()
 
    
-        console.log(use)
+      //  console.log(use)
 
 
     } catch (e) {
