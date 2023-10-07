@@ -1,8 +1,23 @@
 // Здесь идет описание всех функций по взаимодействию с пользователем
-const User = require('./models/User')
-const Role = require('./models/Role')
+const User = require('../models/User')
+const Role = require('../models/Role')
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const { validationResult } = require("express-validator")
+const { secret } = require("../configJWT")
+
+
+// Функция генерации "access" токена
+const generateAccessToken = (id, roles) => {
+// id, roles необходимо для того чтобы внутри токена спрятать эту инфорацию
+
+    const payload = {
+        id,
+        roles
+    }
+    return jwt.sign(payload, secret,  { expiresIn: "24h"})  //Токен живет 24 часа. Мошенник не сможет его использовать по истечении срока жизни
+}
+
 
 // Я создал "class" чтобы скомпоновать функции ниже в одну сущность
 class authContoller {
@@ -49,6 +64,24 @@ class authContoller {
     async login(req, res) {
         try {
 
+            const { username, password } = req.body
+            
+            //Поиск пользователтя в БД
+            const user = await User.findOne({ username })
+            if(!user) {
+                return res.status(400).json({ message: "Пользователь не найдет"})
+            }
+
+            //Сравнение пришедшего пароля от пользователя с "захешированным" паролем в БД
+            const vlidPassword = bcrypt.compareSync( password, user.password)
+            if(!vlidPassword) {
+                return res.status(400).json({ message: "Введен неверный пароль"})
+            }
+
+            //Создание токена
+            const token = generateAccessToken(user._id, user.roles )
+            return res.json({token}) //Отправка токена клиенту
+             
         } catch (e) {
             console.log(e)
             res.status(400).json({ message: 'Login error' })
