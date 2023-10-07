@@ -9,12 +9,11 @@ const PORT = process.env.PORT | 5000
 const app = express()
 
 
-// Затставляем сервер парcить json
+// Заставляем сервер парcить json
 app.use(express.json())
 
 // Говорим приложению прослушивать роутер
-app.use('/auth', authRouter) // Первый параметр - url по которому наш роует будет "Слушаться"
-
+app.use('/auth', authRouter) // Первый параметр - url по которому наш роует будет "cлушаться"
 
 
 const options = {
@@ -38,9 +37,4 @@ const start = async () => {
     }
 }
 
-
 start()
-
-
- //const users = client.db().collection('users')
-//const use = await users.find({}).toArray()

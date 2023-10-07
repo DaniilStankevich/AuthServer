@@ -1,17 +1,16 @@
 const Router = require("express")
 const contoller = require("./authController")
-const router = new Router() // Создадим объект этого роутера. Теперь этот роутер может прослушивать запросы
+const router = new Router() // Теперь router может прослушивать запросы
 const { check } = require("express-validator") // Валидация. "check" является функцией middleware 
-const authMiddleware = require('../middleware/authmiddleware')
-
-// Маршруты по которым будут отправляться запросы
+const authMiddleware = require('../middleware/authMiddleware')
+const roleMiddleware = require("../middleware/roleMiddleware")
 
 
 //Запрос на регистрацию  "POST"
 router.post('/registration', [
 
      check('username', "Имя пользователя не может быть пустым ").notEmpty(), 
-     check('password', "Пороль должен быть больше 4 и меньше 10 символов").isLength({min: 4, max: 10})   
+     check('password', "Пароль должен быть меньше 4 и не больше 10 символов").isLength({min: 4, max: 10})   
 
 ],  contoller.registration)
 
@@ -19,7 +18,7 @@ router.post('/registration', [
 //Запрос на вход  "POST"
 router.post('/login', contoller.login)
 
-// Эксперимент на установку различных доступов - пользователь, админ или запрет
-router.get('/users', authMiddleware, contoller.getUsers )
+// Эксперимент на установку различных доступов - пользователь, админ
+router.get('/users', roleMiddleware(['ADMIN']), contoller.getUsers )
 
 module.exports = router

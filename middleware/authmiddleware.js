@@ -20,12 +20,12 @@ module.exports = function (req, res, next) {
         // Если токен есть, то проверяем его. "Декодируем"
         const decodedData = jwt.verify(token,  secret )
 
-        // Создание в запросе нове поле "user"
+        // Создание в запросе новое поле "user"
         req.user = decodedData
         next()
 
     } catch (e) {
         console.log(e)
-        return res.status(403).json({ message: "Пользовтель не авторизован"})
+        return res.status(403).json({ message: "Пользователь не авторизован"})
     }
 }
