@@ -52,7 +52,7 @@ class authContoller {
 
             // Сохранение пользователя в БД и возвращение ответа клиенту
             await user.save()
-            return res.json({ message: "Пользователь успешно зарагестрирован"})
+            return res.json({ message: " Пользователь успешно зарагестрирован"})
 
         } catch (e) {
             console.log(e)
@@ -94,15 +94,9 @@ class authContoller {
 
         try {
 
-        //Создание 2 роли в БД
-        //    const userRole = new Role()
-        //    const adminRole = new Role({ value: "ADMIN"})
+            const users = await User.find()
+            res.json(users)
 
-        //    await    userRole.save()
-        //    await    adminRole.save()
-        //    теперь этот код можно убрать
-
-            res.json("server work)")
         } catch (e) {
 
         }
@@ -112,3 +106,9 @@ class authContoller {
 
 
 module.exports = new authContoller()
+
+// Создание 2 роли в БД
+// const userRole = new Role()
+// const adminRole = new Role({ value: "ADMIN"})
+// await    userRole.save()
+// await    adminRole.save()

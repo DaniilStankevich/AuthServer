@@ -1,4 +1,4 @@
-<span style="background-color: #e9f1f2; padding: 0px 5px 3px 5px; border-radius: 5px; font-size: 1.2em;">**The server is created using Node.js**</span>
+## The server is created using Node.js
 
 The server is created using Node.js in conjunction with the MongoDB database.  
 On this server, you can register, log in, and assign roles.

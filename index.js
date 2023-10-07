@@ -29,7 +29,6 @@ const options = {
 
 
 const start = async () => {
-
     try {
         await mongoose.connect(uri, options)
         app.listen(PORT, () => console.log(`server stared on port ${PORT}`))
@@ -37,8 +36,8 @@ const start = async () => {
 
         console.log(e) 
     }
-
 }
+
 
 start()
 

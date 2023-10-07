@@ -2,7 +2,7 @@ const Router = require("express")
 const contoller = require("./authController")
 const router = new Router() // Создадим объект этого роутера. Теперь этот роутер может прослушивать запросы
 const { check } = require("express-validator") // Валидация. "check" является функцией middleware 
-
+const authMiddleware = require('../middleware/authmiddleware')
 
 // Маршруты по которым будут отправляться запросы
 
@@ -20,6 +20,6 @@ router.post('/registration', [
 router.post('/login', contoller.login)
 
 // Эксперимент на установку различных доступов - пользователь, админ или запрет
-router.get('/users', contoller.getUsers )
+router.get('/users', authMiddleware, contoller.getUsers )
 
 module.exports = router
